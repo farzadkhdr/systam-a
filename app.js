@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // نمایشکردنی ئەدرێسی API لەسەر پەڕەکە
     const currentUrl = window.location.origin;
-    apiUrlElement.textContent = `${currentUrl}/api/send-data`;
+    const apiUrl = `${currentUrl}/api/send-data`;
+    apiUrlElement.textContent = apiUrl;
+    console.log('لینکی API:', apiUrl);
     
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -23,12 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
             system: 'System A'
         };
         
+        console.log('داتای ناردن:', formData);
+        
         // پێش ناردن، نمایشکردنی بار
         showStatus('ناردنی زانیاریەکان...', 'loading');
         
         try {
+            console.log('ناردن بۆ API:', apiUrl);
+            
             // ناردنی POST request بۆ API
-            const response = await fetch('/api/send-data', {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,7 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(formData)
             });
             
+            console.log('وەڵامی API:', response.status, response.statusText);
             const result = await response.json();
+            console.log('داتای وەڵام:', result);
             
             if (response.ok) {
                 // سەرکەوتووبوون
@@ -52,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             // هەڵەی پەیوەندیکردن
+            console.error('هەڵەی تەواو:', error);
             showStatus(`هەڵەی پەیوەندیکردن: ${error.message}`, 'error');
-            console.error('هەڵە:', error);
         }
     });
     
