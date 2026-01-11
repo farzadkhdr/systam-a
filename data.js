@@ -3,7 +3,7 @@
 
 // ئەم ئەدرێسە دەبێت بە سیستەمی B لە Vercel تێدا بنێری
 // پاش هۆستکردنی سیستەمی B، ئەم ئەدرێسەیە لێرە دابنێ
-const SYSTEM_B_API_URL = 'https://system-b.vercel.app/api/receive-data';
+const SYSTEM_B_API_URL = 'https://systam-b-r5hy.vercel.app';
 
 export default async function handler(req, res) {
     // تەنها POST ڕێگادەپێدرێت
