@@ -2,7 +2,8 @@
 // لەسەر Vercel Serverless Functions
 
 // ئەم ئەدرێسە دەبێت بە سیستەمی B لە Vercel تێدا بنێری
-const SYSTEM_B_API_URL = 'https://systam-b-r5hy-1v97ltshb-farzads-projects-912fa130.vercel.app/api/receive-data';
+const SYSTEM_B_API_URL = 'https://ai-gateway.vercel.sh/v1'
+)
 
 export default async function handler(req, res) {
     // زیادکردنی CORS headers
