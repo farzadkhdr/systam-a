@@ -1,245 +1,89 @@
-<!DOCTYPE html>
-<html lang="ku">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستەمی B - وەرگرتنی زانیاری</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px;
-            padding: 40px;
-            text-align: center;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
-        }
-        
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 16px;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .stat-box {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            min-width: 140px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: #f5576c;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .received-data {
-            margin-top: 25px;
-            text-align: right;
-        }
-        
-        .data-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 20px;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .data-item {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            text-align: right;
-            border-left: 4px solid #f5576c;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .data-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .data-name {
-            font-weight: 700;
-            color: #333;
-            font-size: 18px;
-        }
-        
-        .data-time {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .data-email {
-            color: #f5576c;
-            margin-bottom: 10px;
-            direction: ltr;
-            text-align: left;
-        }
-        
-        .data-message {
-            color: #555;
-            line-height: 1.6;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #e0e0e0;
-        }
-        
-        .no-data {
-            color: #999;
-            font-style: italic;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .footer {
-            margin-top: 30px;
-            color: #666;
-            font-size: 14px;
-            text-align: center;
-        }
-        
-        .api-url {
-            background-color: #f1f3f4;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 13px;
-            word-break: break-all;
-        }
-        
-        .refresh-btn {
-            background: linear-gradient(to right, #f093fb, #f5576c);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-bottom: 20px;
-        }
-        
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(245, 87, 108, 0.4);
-        }
-        
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
-        
-        .system-status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        
-        .status-loading {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>سیستەمی B</h1>
-        <p class="subtitle">سیستەمی وەرگرتنی زانیاری لە سیستەمی A</p>
-        
-        <div class="stats">
-            <div class="stat-box">
-                <div class="stat-value" id="totalReceived">0</div>
-                <div class="stat-label">کۆی وەرگێڕدراوەکان</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="lastReceived">-</div>
-                <div class="stat-label">دوایین وەرگێڕان</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">
-                    <span id="systemStatus" class="system-status status-active">چالاکە</span>
-                </div>
-                <div class="stat-label">بارودۆخی سیستەم</div>
-            </div>
-        </div>
-        
-        <button class="refresh-btn" id="refreshBtn">نوێکردنەوەی زانیاریەکان</button>
-        
-        <div class="received-data">
-            <div class="data-title">زانیاریە وەرگێڕدراوەکان</div>
-            <div id="dataList">
-                <div class="no-data">هیچ زانیاریەک وەرنەگیراوە تا ئێستا...</div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>ئەم سیستەمە زانیاریەکان وەردەگرێت لە سیستەمی A لە ڕێگای API</p>
-            <div class="api-url">
-                API وەرگرتن: <span id="apiUrl">/api/receive-data</span>
-            </div>
-            <p style="margin-top: 15px; font-size: 12px; color: #888;">
-                پەیوەندیدارە بە: <span id="systemAUrl">سیستەمی A</span>
-            </p>
-        </div>
-    </div>
+// فایلی JavaScript بۆ سیستەمی A
 
-    <script src="app.js"></script>
-</body>
-</html>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('dataForm');
+    const statusMessage = document.getElementById('statusMessage');
+    const responseContainer = document.getElementById('responseContainer');
+    const responseData = document.getElementById('responseData');
+    const apiUrlElement = document.getElementById('apiUrl');
+    
+    // نمایشکردنی ئەدرێسی API لەسەر پەڕەکە
+    const currentUrl = window.location.origin;
+    apiUrlElement.textContent = `${currentUrl}/api/send-data`;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // کۆکردنەوەی زانیاریەکان لە فۆرمەکە
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            message: document.getElementById('message').value,
+            timestamp: new Date().toISOString(),
+            system: 'System A'
+        };
+        
+        // پێش ناردن، نمایشکردنی بار
+        showStatus('ناردنی زانیاریەکان...', 'loading');
+        responseContainer.style.display = 'none';
+        
+        try {
+            // ناردنی POST request بۆ API
+            const response = await fetch('/api/send-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                // سەرکەوتووبوون
+                showStatus('زانیاریەکان بە سەرکەوتووی نێردران بۆ سیستەمی B!', 'success');
+                showResponse(result);
+                
+                // پاککردنەوەی فۆرمەکە
+                form.reset();
+            } else {
+                // هەڵە
+                showStatus(`هەڵە: ${result.error || 'کێشەیەک هەیە'}` , 'error');
+                showResponse(result);
+            }
+        } catch (error) {
+            // هەڵەی پەیوەندیکردن
+            showStatus(`هەڵەی پەیوەندیکردن: ${error.message}`, 'error');
+            console.error('هەڵە:', error);
+            
+            // نمایشکردنی هەڵە لە وەڵامدا
+            responseData.textContent = JSON.stringify({
+                error: error.message,
+                note: 'کێشەی پەیوەندیکردن لەگەڵ API'
+            }, null, 2);
+            responseContainer.style.display = 'block';
+        }
+    });
+    
+    // فەنکشنی نمایشکردنی بارودۆخ
+    function showStatus(message, type) {
+        statusMessage.textContent = message;
+        statusMessage.className = 'status';
+        
+        if (type === 'loading') {
+            statusMessage.classList.add('loading');
+        } else if (type === 'success') {
+            statusMessage.classList.add('success');
+        } else if (type === 'error') {
+            statusMessage.classList.add('error');
+        }
+        
+        statusMessage.style.display = 'block';
+    }
+    
+    // فەنکشنی نمایشکردنی وەڵام
+    function showResponse(data) {
+        responseData.textContent = JSON.stringify(data, null, 2);
+        responseContainer.style.display = 'block';
+    }
+});
