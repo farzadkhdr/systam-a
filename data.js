@@ -2,14 +2,14 @@
 // لەسەر Vercel Serverless Functions
 
 // ئەم ئەدرێسە دەبێت بە سیستەمی B لە Vercel تێدا بنێری
-const SYSTEM_B_API_URL = 'https://ai-gateway.vercel.sh/v1'
-)
+// لەم نموونەدا، سیستەمی B لەم ئەدرێسەیەیە: https://systam-b.vercel.app
+const SYSTEM_B_API_URL = 'https://systam-b.vercel.app/api/receive-data';
 
 export default async function handler(req, res) {
-    // زیادکردنی CORS headers
+    // زیادکردنی CORS headers بۆ سیستەمی A
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-System-A-Key');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
     // چارەسەری CORS preflight
     if (req.method === 'OPTIONS') {
@@ -18,7 +18,10 @@ export default async function handler(req, res) {
     
     // تەنها POST ڕێگادەپێدرێت
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'تەنها POST ڕێگادەپێدرێت' });
+        return res.status(405).json({ 
+            success: false,
+            error: 'تەنها POST ڕێگادەپێدرێت' 
+        });
     }
     
     try {
@@ -27,6 +30,7 @@ export default async function handler(req, res) {
         // چەککردنی داتا
         if (!data.name || !data.email || !data.message) {
             return res.status(400).json({ 
+                success: false,
                 error: 'ناو، ئیمەیڵ و پەیام پێویستە' 
             });
         }
@@ -34,53 +38,35 @@ export default async function handler(req, res) {
         // زیادکردنی نیشانەی کاتی ناردن
         data.sentAt = new Date().toISOString();
         data.receivedBySystemA = true;
-        data.systemAUrl = 'https://systam-a.vercel.app';
-        
-        console.log('ناردنی داتا بۆ سیستەمی B:', SYSTEM_B_API_URL);
-        console.log('داتای ناردن:', { name: data.name, email: data.email });
+        data.id = Date.now();
         
         // ناردنی داتا بۆ سیستەمی B
         let systemBResponse;
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000);
-            
             const response = await fetch(SYSTEM_B_API_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-System-A-Key': 'system-a-secret-key-12345'
                 },
-                body: JSON.stringify(data),
-                signal: controller.signal
+                body: JSON.stringify(data)
             });
             
-            clearTimeout(timeoutId);
-            
-            console.log('وەڵامی سیستەمی B:', response.status, response.statusText);
+            systemBResponse = await response.json();
             
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('هەڵەی سیستەمی B:', errorText);
-                throw new Error(`سیستەمی B وەڵامی ${response.status}ی داوە`);
+                throw new Error(systemBResponse.error || `سیستەمی B وەڵامی ${response.status}ی داوە`);
             }
             
-            systemBResponse = await response.json();
-            console.log('وەڵامی سەرکەوتوو لە سیستەمی B:', systemBResponse);
-            
         } catch (apiError) {
-            // ئەگەر پەیوەندی بە سیستەمی Bەوە سەرکەوتونەبوو
             console.error('هەڵە لە پەیوەندی بە سیستەمی Bەوە:', apiError.message);
             
-            // بەڵام هەر وەڵام بە سەرکەوتوویی دەدرێتەوە بۆ کلایەنت
             return res.status(200).json({
                 success: true,
                 message: 'زانیاریەکان وەرگیران، بەڵام نەتوانرا بگوازرێتەوە بۆ سیستەمی B',
                 data: data,
                 systemBError: apiError.message,
-                systemBUrl: SYSTEM_B_API_URL,
-                note: 'سیستەمی B لەکارە یان پەیوەندیکردنی هەیە',
-                timestamp: new Date().toISOString()
+                note: 'سیستەمی B لەکارە یان پەیوەندیکردنی هەیە'
             });
         }
         
@@ -90,16 +76,15 @@ export default async function handler(req, res) {
             message: 'زانیاریەکان بە سەرکەوتووی نێردران بۆ سیستەمی B',
             data: data,
             systemBResponse: systemBResponse,
-            systemBUrl: SYSTEM_B_API_URL,
             timestamp: new Date().toISOString()
         });
         
     } catch (error) {
         console.error('هەڵەی گشتی:', error);
         return res.status(500).json({ 
+            success: false,
             error: 'هەڵەی ناوەخۆیی سرڤەر', 
-            details: error.message,
-            systemBUrl: SYSTEM_B_API_URL
+            details: error.message 
         });
     }
 }
