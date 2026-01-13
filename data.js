@@ -1,12 +1,11 @@
 // فەنکشنی API بۆ ناردنی داتا بۆ سیستەمی B
 // لەسەر Vercel Serverless Functions
 
-// ئەم ئەدرێسە دەبێت بە سیستەمی B لە Vercel تێدا بنێری
-// لەم نموونەدا، سیستەمی B لەم ئەدرێسەیەیە: https://systam-b.vercel.app
+// ئەدرێسی سیستەمی B
 const SYSTEM_B_API_URL = 'https://systam-b.vercel.app/api/receive-data';
 
 export default async function handler(req, res) {
-    // زیادکردنی CORS headers بۆ سیستەمی A
+    // زیادکردنی CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -43,6 +42,7 @@ export default async function handler(req, res) {
         // ناردنی داتا بۆ سیستەمی B
         let systemBResponse;
         try {
+            console.log('ناردنی داتا بۆ سیستەمی B:', SYSTEM_B_API_URL);
             const response = await fetch(SYSTEM_B_API_URL, {
                 method: 'POST',
                 headers: {
@@ -57,6 +57,8 @@ export default async function handler(req, res) {
             if (!response.ok) {
                 throw new Error(systemBResponse.error || `سیستەمی B وەڵامی ${response.status}ی داوە`);
             }
+            
+            console.log('وەڵامی سەرکەوتووی سیستەمی B:', systemBResponse);
             
         } catch (apiError) {
             console.error('هەڵە لە پەیوەندی بە سیستەمی Bەوە:', apiError.message);
