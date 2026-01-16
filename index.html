@@ -1,215 +1,799 @@
 <!DOCTYPE html>
-<html lang="ku">
+<html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستەمی A - ناردنی زانیاری</title>
+    <title>سیستەمی ناردنی داواکاری - فرۆشتنی خانوو</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #333;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #166088;
+            --secondary-color: #0d3b66;
+            --accent-color: #17a2b8;
+            --light-color: #343a40;
+            --dark-color: #f8f9fa;
+            --text-color: #f8f9fa;
+        }
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
         }
-        
+
         .container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 500px;
-            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+
+        /* Navigation Styles */
+        nav {
+            background-color: var(--secondary-color);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: var(--accent-color);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            min-height: 70vh;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
             text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
         }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
+
+        .page-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            border-radius: 2px;
         }
-        
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 16px;
+
+        /* Form Styles */
+        .form-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        
+
         .form-group {
-            margin-bottom: 25px;
-            text-align: right;
+            margin-bottom: 1.8rem;
         }
-        
-        label {
+
+        .form-label {
             display: block;
-            margin-bottom: 8px;
-            color: #555;
+            margin-bottom: 0.7rem;
             font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
         }
-        
-        input, textarea {
+
+        .form-input, .form-select {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            padding: 0.9rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: white;
+            color: var(--text-color);
         }
-        
-        input:focus, textarea:focus {
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--accent-color);
             outline: none;
-            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.2);
         }
-        
-        textarea {
-            height: 120px;
-            resize: vertical;
+
+        .form-hint {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
         }
-        
-        .btn {
-            background: linear-gradient(to right, #667eea, #764ba2);
+
+        .submit-btn {
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 16px 40px;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .status {
-            margin-top: 25px;
-            padding: 15px;
-            border-radius: 8px;
-            display: none;
+            transition: var(--transition);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 2rem auto 0;
+        }
+
+        .submit-btn:hover {
+            background-color: #138496;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2.5rem 0;
             text-align: center;
+            margin-top: 3rem;
         }
-        
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            display: block;
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
         }
-        
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block;
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        
-        .loading {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-            display: block;
+
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
         }
-        
-        .response-data {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-            text-align: right;
+
+        .footer-link:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Hidden Sections */
+        .page-section {
             display: none;
         }
-        
-        .response-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
+
+        .page-section.active {
+            display: block;
         }
-        
-        .footer {
-            margin-top: 30px;
-            color: #666;
-            font-size: 14px;
-            text-align: center;
+
+        /* Autocomplete Styles */
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            right: 0;
+            left: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
         }
-        
-        .api-url {
-            background-color: #f1f3f4;
+
+        .autocomplete-items div {
             padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-family: monospace;
-            font-size: 13px;
-            word-break: break-all;
-            text-align: center;
+            cursor: pointer;
+            border-bottom: 1px solid #d4d4d4;
+            color: var(--dark-color);
         }
-        
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 12px;
-            text-align: left;
+
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+
+        .autocomplete-active {
+            background-color: var(--accent-color) !important;
+            color: white !important;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>سیستەمی A</h1>
-        <p class="subtitle">سیستەمی ناردنی زانیاری بۆ سیستەمی B</p>
-        
-        <form id="dataForm">
-            <div class="form-group">
-                <label for="name">ناو:</label>
-                <input type="text" id="name" placeholder="ناوی تۆماربکە" required>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>سیستەمی ناردنی داواکاری</span>
             </div>
-            
-            <div class="form-group">
-                <label for="email">ئیمەیڵ:</label>
-                <input type="email" id="email" placeholder="example@email.com" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="message">پەیام:</label>
-                <textarea id="message" placeholder="پەیامەکەت لێرە بنووسە..." required></textarea>
-            </div>
-            
-            <button type="submit" class="btn">ناردنی زانیاری بۆ سیستەمی B</button>
-        </form>
-        
-        <div id="statusMessage" class="status"></div>
-        
-        <div id="responseContainer" class="response-data">
-            <div class="response-title">وەڵامی سیستەمی B:</div>
-            <pre id="responseData"></pre>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
-        
-        <div class="footer">
-            <p>ئەم سیستەمە زانیاریەکان دەنێرێت بۆ سیستەمی B لە ڕێگای API</p>
-            <div class="api-url">
-                API ناردن: <span id="apiUrl">/api/send-data</span>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="main">
+                        <i class="fas fa-home"></i>
+                        بەشی سەرەکی
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="house-sale">
+                        <i class="fas fa-house-user"></i>
+                        فرۆشتنی خانوو
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="house-buy">
+                        <i class="fas fa-search-dollar"></i>
+                        کڕینی خانوو
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="land-sale">
+                        <i class="fas fa-mountain"></i>
+                        فرۆشتنی زەوی
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="land-buy">
+                        <i class="fas fa-flag"></i>
+                        کڕینی زەوی
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="advertisements">
+                        <i class="fas fa-ad"></i>
+                        رێکلامەکان
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Main Page -->
+        <section id="main-page" class="page-section active main-content">
+            <h1 class="page-title">بەخێربێن بۆ سیستەمی ناردنی داواکاری</h1>
+            <div class="form-container">
+                <p style="text-align: center; font-size: 1.2rem; margin-bottom: 2rem;">
+                    ئەم سیستەمە بۆ ناردنی داواکاری بۆ کڕین و فرۆشتنی خانوو و زەویە. تکایە لە لیستەی خوارەوە بەشی ئەو داواکاریە هەڵبژێرە کە دەتەوێت.
+                </p>
+                
+                <div class="form-group" style="text-align: center;">
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-top: 2rem;">
+                        <div class="service-card" style="background: linear-gradient(135deg, #4a6fa5, #166088); color: white; padding: 2rem; border-radius: var(--border-radius); width: 250px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.1);">
+                            <i class="fas fa-house-user" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 1rem;">فرۆشتنی خانوو</h3>
+                            <p>داواکاری فرۆشتنی خانوو</p>
+                        </div>
+                        
+                        <div class="service-card" style="background: linear-gradient(135deg, #17a2b8, #138496); color: white; padding: 2rem; border-radius: var(--border-radius); width: 250px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.1);">
+                            <i class="fas fa-search-dollar" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 1rem;">کڕینی خانوو</h3>
+                            <p>داواکاری کڕینی خانوو</p>
+                        </div>
+                        
+                        <div class="service-card" style="background: linear-gradient(135deg, #28a745, #1e7e34); color: white; padding: 2rem; border-radius: var(--border-radius); width: 250px; text-align: center; box-shadow: 0 6px 15px rgba(0,0,0,0.1);">
+                            <i class="fas fa-ad" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <h3 style="margin-bottom: 1rem;">رێکلامەکان</h3>
+                            <p>بینینی رێکلامەکان</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; margin-top: 2rem; font-style: italic; color: #666;">
+                    ئێستا تەنها بەشی فرۆشتنی خانوو کار دەکات. بەشەکانی تر لە وەشانی داهاتوو زیاد دەکرێن.
+                </p>
             </div>
-            <p style="margin-top: 15px; font-size: 12px; color: #888;">
-                پەیوەندی دەکات بە: https://systam-b.vercel.app
+        </section>
+
+        <!-- House Sale Page -->
+        <section id="house-sale-page" class="page-section main-content">
+            <h1 class="page-title">فرۆشتنی خانوو</h1>
+            
+            <form id="houseSaleForm" class="form-container">
+                <!-- Mobile Number -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-mobile-alt"></i>
+                        ژمارەی موبایلی خۆت بنووسە تا پەیوەندیت پێوە بکرێ لە لایەن کۆمپانیا:
+                    </label>
+                    <input type="tel" class="form-input" id="mobile" name="mobile" placeholder="٠٧٧٠ ١٢٣ ٤٥٦٧" required>
+                    <span class="form-hint">ژمارەی موبایل بە شێوازی کوردی بنووسە</span>
+                </div>
+                
+                <!-- Name -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        ناوی بەرێزت:
+                    </label>
+                    <input type="text" class="form-input" id="name" name="name" placeholder="ناوی تۆمار بکە" required>
+                </div>
+                
+                <!-- Location -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        شوێنەکە دیاری بکە کە خانوەکەت لێی دەفرۆشیت:
+                    </label>
+                    <input type="text" class="form-input" id="location" name="location" placeholder="شوێنەکەت بنووسە یان هەڵیبژێرە" required autocomplete="off">
+                    <span class="form-hint">لە کاتی نوسین پێشنیار دەکرێت</span>
+                    <div id="locationAutocomplete" class="autocomplete-items"></div>
+                </div>
+                
+                <!-- Sale Type -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-tag"></i>
+                        جۆری فرۆشتنی خانوو هەڵبژێرە:
+                    </label>
+                    <select class="form-select" id="saleType" name="saleType" required>
+                        <option value="">جۆری فرۆشتن هەڵبژێرە</option>
+                        <option value="تاپۆ">تاپۆ</option>
+                        <option value="کارت">کارت</option>
+                    </select>
+                </div>
+                
+                <!-- Size -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-ruler-combined"></i>
+                        هەڵبژاردنی قەبارە (مەتر):
+                    </label>
+                    <select class="form-select" id="size" name="size" required>
+                        <option value="">قەبارەی خانوەکەت هەڵبژێرە</option>
+                        <option value="100">100 م²</option>
+                        <option value="125">125 م²</option>
+                        <option value="150">150 م²</option>
+                        <option value="175">175 م²</option>
+                        <option value="200">200 م²</option>
+                        <option value="225">225 م²</option>
+                        <option value="250">250 م²</option>
+                        <option value="275">275 م²</option>
+                        <option value="300">300 م²</option>
+                        <option value="325">325 م²</option>
+                        <option value="350">350 م²</option>
+                        <option value="375">375 م²</option>
+                        <option value="400">400 م²</option>
+                        <option value="425">425 م²</option>
+                        <option value="450">450 م²</option>
+                        <option value="475">475 م²</option>
+                        <option value="500">500 م²</option>
+                        <option value="525">525 م²</option>
+                        <option value="550">550 م²</option>
+                        <option value="575">575 م²</option>
+                        <option value="600">600 م²</option>
+                        <option value="625">625 م²</option>
+                        <option value="650">650 م²</option>
+                        <option value="675">675 م²</option>
+                        <option value="700">700 م²</option>
+                        <option value="725">725 م²</option>
+                        <option value="750">750 م²</option>
+                        <option value="775">775 م²</option>
+                        <option value="800">800 م²</option>
+                        <option value="825">825 م²</option>
+                        <option value="850">850 م²</option>
+                        <option value="875">875 م²</option>
+                        <option value="900">900 م²</option>
+                        <option value="925">925 م²</option>
+                        <option value="950">950 م²</option>
+                        <option value="975">975 م²</option>
+                        <option value="1000">1000 م²</option>
+                    </select>
+                </div>
+                
+                <!-- Price -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-money-bill-wave"></i>
+                        نرخی خانووەکە چەندە؟ بە پێی رۆژ دیاری دەکرێ:
+                    </label>
+                    <input type="number" class="form-input" id="price" name="price" placeholder="نرخی خانوەکە بە دینار" required>
+                    <span class="form-hint">نرخ بە دیناری عێراقی بنووسە</span>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    ناردنی داواکاری
+                </button>
+            </form>
+            
+            <!-- Response Message -->
+            <div id="responseMessage" class="form-container" style="display: none;">
+                <h2 style="color: var(--accent-color); text-align: center; margin-bottom: 1rem;">
+                    <i class="fas fa-check-circle"></i>
+                    داواکاریەکەت بە سەرکەوتویی نێردرا!
+                </h2>
+                <p style="text-align: center;">
+                    زانیاریەکانت وەرگیرا و لە ماوەی ٢٤ کاتژمێری دا پەیوەندیت پێوە دەکرێت لەلایەن کارمەندانی کۆمپانیا.
+                </p>
+            </div>
+        </section>
+
+        <!-- Other Sections (Placeholders) -->
+        <section id="house-buy-page" class="page-section main-content">
+            <h1 class="page-title">کڕینی خانوو</h1>
+            <div class="form-container">
+                <p style="text-align: center; font-size: 1.2rem;">
+                    ئەم بەشە لە وەشانی داهاتوو زیاد دەکرێت.
+                </p>
+            </div>
+        </section>
+        
+        <section id="land-sale-page" class="page-section main-content">
+            <h1 class="page-title">فرۆشتنی زەوی</h1>
+            <div class="form-container">
+                <p style="text-align: center; font-size: 1.2rem;">
+                    ئەم بەشە لە وەشانی داهاتوو زیاد دەکرێت.
+                </p>
+            </div>
+        </section>
+        
+        <section id="land-buy-page" class="page-section main-content">
+            <h1 class="page-title">کڕینی زەوی</h1>
+            <div class="form-container">
+                <p style="text-align: center; font-size: 1.2rem;">
+                    ئەم بەشە لە وەشانی داهاتوو زیاد دەکرێت.
+                </p>
+            </div>
+        </section>
+        
+        <section id="advertisements-page" class="page-section main-content">
+            <h1 class="page-title">رێکلامەکان</h1>
+            <div class="form-container">
+                <p style="text-align: center; font-size: 1.2rem;">
+                    ئەم بەشە لە وەشانی داهاتوو زیاد دەکرێت.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>سیستەمی ناردنی داواکاری</span>
+            </div>
+            
+            <div class="footer-links">
+                <a href="#" class="footer-link">دەربارەی ئێمە</a>
+                <a href="#" class="footer-link">پەیوەندیمان پێوە بکە</a>
+                <a href="#" class="footer-link">مەرجەکان</a>
+                <a href="#" class="footer-link">سیاسەتی پاراستنی زانیاری</a>
+            </div>
+            
+            <p class="copyright">
+                &copy; ٢٠٢٣ سیستەمی ناردنی داواکاری. هەموو مافەکان پارێزراون.
             </p>
         </div>
-    </div>
+    </footer>
 
-    <script src="app.js"></script>
+    <script>
+        // Location data for autocomplete
+        const locations = [
+            "شۆرش", "شارێ یۆنانی", "کوێستان(قادسیە)", "سێوەکە", "ئارام گاردن", "کانی", 
+            "ئیمپایەر رۆیاڵ ئەپارتمێنت", "خوێندنی باڵا", "قەرەبوی کارێز", "کورانی نوێ", 
+            "بەختیاری نوێ", "ئازادی بەحرکە", "برایەتی بەحرکە", "گوڵان ستی", 
+            "کۆمەڵگەی ژین (بەحرکە)", "مەلا یاسین", "ڤێلاکانی ئۆکلاند", "ئەربیل گاردن", 
+            "ڤانە تاوەرز", "ئۆلیڤ گاردن ستی", "بەحرکەی نوێ", "سەیدان B", "میراج ستی", 
+            "خەرابەدراو", "دارەبەن", "فەرمان بەرانی (بەحرکە)", "ڕاستی (بەحرکە)", 
+            "دارەتوی نوێ", "بنەسڵاوە", "ئاری", "دیلان", "99 زانکۆ", "زیلان ستی", 
+            "94 باداوە", "کارێزان", "ئەدرێس ئەربیل", "بیڤرلی هیڵز", "سەربەستی نوێ (8ی تورەق)", 
+            "سەیدان", "جیدە", "قۆپەقران", "ڵایف تاوەرز", "قەرەبووی کەلەکین", 
+            "کرێچیانی شاوێس", "قەرەبووی شاوێس", "پیشەسازی باشور", "لالاڤ سەن تاوەرز", 
+            "نیو ئیسکان", "نایس ڤیلەج", "کوین تاوەر", "شاری سانا", "چنار (شورتاوە)", 
+            "407 عنکاوە", "حاکماوا", "عەنکاوە 128", "سیمی خاتوناوە", "121 گوڵان (گوڵان 1)", 
+            "زانایان", "سەروەران", "پێشمەرگە (تاپۆ)", "ئاڵتون ستی", "سێبەردان 2", 
+            "هەڤاڵان", "دارەتوو", "ئاڵاسکا تاوەرز", "کەڕک(تاپۆ)", "گەرەسۆری کارت", 
+            "گەرەسۆر", "گەرەسۆری تەعجیل", "گوندی ئەمریکی", "هەواری شار", "دوبەی ستی", 
+            "تیمار", "ڕووناکی", "موفتی", "ئەندازیاران", "مەنتکاوە", "شادی و بەهاری نوێ", 
+            "منارە سیتی 2", "ماردین", "کوردستان", "ئایندە ستی 2", "ئایندە ستی 1", 
+            "هەولێر ستی", "فلۆرێنس تاوەر", "سینترۆ تاوەر", "ئۆزال ستی", "هیران ستی", 
+            "لانە ستی", "شاری ئەندازیاران", "ژیان ستی", "سەری بڵند", "ڕاستی (عەدالە)", 
+            "لەندەن تاوەرز", "زەیتون ستی", "رۆشنبیری 1", "ئاشۆکان", "نەورۆز (حەی عەسکەری)", 
+            "14 کونە گورگ", "مارینا 1", "مارینا 2", "مارینا 3", "فیوچەر ستی", 
+            "پێشەنگ پلەس تاوەرز", "ماس ستی", "فلۆریا ستی", "شاری هەرشەم 3", "زێڕین ستی", 
+            "ئۆلیڤ ستی", "قەرەبووی رەشکین (زەوییەکانی تێرمیناڵ)", "ڤارسان", "قەرەبوی گەنجان", 
+            "زین ستی", "ژین", "کوردستان ستی", "نۆبڵ ستی", "فیردەوس ستی", 
+            "شاری ژیانی (هاوچەرخ)", "ڤار پارک", "باغمرە شهاب", "دیپلۆماتی سەفیران", 
+            "سلاڤا ستی", "پاڤلیۆن", "گەزنەی نوێ", "قەرەبووی گرد جوتیار", "بێریات", 
+            "عەزە", "عارەب کەند", "هیوا ستی", "147 عنکاوە", "کانی قرژاڵە", "گرد جوتیار", 
+            "هەولێری نوێ", "8 حەسارۆک", "5 حەسارۆک", "فەرمان بەران", "بەختیاری", 
+            "وەزیران (پەرلەمان)", "گوندی زانکۆی نوێ", "مامۆستایانی زانکۆ", "شارەوانی"
+        ];
+
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageSections = document.querySelectorAll('.page-section');
+        const locationInput = document.getElementById('location');
+        const locationAutocomplete = document.getElementById('locationAutocomplete');
+        const houseSaleForm = document.getElementById('houseSaleForm');
+        const responseMessage = document.getElementById('responseMessage');
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const icon = themeToggle.querySelector('i');
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
+        }
+
+        // Navigation
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Update active nav link
+                navLinks.forEach(navLink => navLink.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Show selected page
+                const pageId = link.getAttribute('data-page');
+                pageSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === `${pageId}-page`) {
+                        section.classList.add('active');
+                        
+                        // Add animation
+                        section.style.opacity = '0';
+                        section.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            section.style.opacity = '1';
+                            section.style.transform = 'translateY(0)';
+                        }, 50);
+                    }
+                });
+            });
+        });
+
+        // Location Autocomplete
+        locationInput.addEventListener('input', function() {
+            const inputVal = this.value;
+            locationAutocomplete.innerHTML = '';
+            
+            if (!inputVal) return;
+            
+            const filteredLocations = locations.filter(loc => 
+                loc.includes(inputVal)
+            );
+            
+            filteredLocations.forEach(loc => {
+                const div = document.createElement('div');
+                div.innerHTML = `<strong>${loc.substring(0, inputVal.length)}</strong>${loc.substring(inputVal.length)}`;
+                div.addEventListener('click', function() {
+                    locationInput.value = loc;
+                    locationAutocomplete.innerHTML = '';
+                });
+                locationAutocomplete.appendChild(div);
+            });
+        });
+
+        // Close autocomplete when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.id !== 'location') {
+                locationAutocomplete.innerHTML = '';
+            }
+        });
+
+        // Form Submission
+        houseSaleForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                mobile: document.getElementById('mobile').value,
+                name: document.getElementById('name').value,
+                location: document.getElementById('location').value,
+                saleType: document.getElementById('saleType').value,
+                size: document.getElementById('size').value,
+                price: document.getElementById('price').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // In a real application, you would send this to your API
+            console.log('Form data to be sent to API:', formData);
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Hide form and show success message
+                houseSaleForm.style.display = 'none';
+                responseMessage.style.display = 'block';
+                
+                // Reset form after 5 seconds
+                setTimeout(() => {
+                    houseSaleForm.reset();
+                    houseSaleForm.style.display = 'block';
+                    responseMessage.style.display = 'none';
+                    
+                    // Navigate back to main page
+                    document.querySelector('[data-page="main"]').click();
+                }, 5000);
+            }, 1500);
+            
+            // For demo purposes, we'll log to console and show alert
+            alert(`داواکاریەکەت بە سەرکەوتویی نێردرا!\n\nناو: ${formData.name}\nژمارەی مۆبایل: ${formData.mobile}\nشوێن: ${formData.location}`);
+        });
+
+        // Initialize with house sale page active (as per requirement)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show house sale page by default
+            document.querySelector('[data-page="house-sale"]').click();
+        });
+    </script>
 </body>
 </html>
